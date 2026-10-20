@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- ===== SEO Meta Tags ===== -->
+  <meta name="description" content="Wachira Kelvin Easy solutions – Discover Hidden Treasures at Unbeatable Prices. Premium dropshipping store with electronics, fashion, home goods, and beauty products." />
+  <meta name="keywords" content="treasure kelvins, online shopping, dropshipping, electronics, fashion, home goods, deals" />
+  <meta name="author" content="Treasure Kelvins" />
+  <meta property="og:title" content="Treasure Kelvins | Hidden Treasures at Unbeatable Prices" />
+  <meta property="og:description" content="Shop premium products at unbeatable prices. Free shipping on orders over $50." />
+  <meta property="og:type" content="website" />
+  <title>Treasure Kelvins | Discover Hidden Treasures</title>
+
+  <!-- ===== Google Fonts ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <!-- ===== Font Awesome Icons ===== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- ===== Main Stylesheet ===== -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div id="loader" class="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">TK</div>
+      <div class="loader-bar"><div class="loader-progress"></div></div>
+      <p class="loader-text">Discovering Treasures…</p>
+    </div>
+  </div>
+
+  <!-- ===== CART SIDEBAR ===== -->
+  <div id="cartOverlay" class="cart-overlay"></div>
+  <aside id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart <span id="cartCount" class="cart-badge">0</span></h3>
+      <button id="closeCart" class="close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal" class="total-price">$0.00</span>
+      </div>
+      <button class="btn-gold btn-full" onclick="openCheckout()">Proceed to Checkout</button>
+      <button class="btn-outline btn-full" onclick="closeCart()">Continue Shopping</button>
+    </div>
+  </aside>
+
+  <!-- ===== CHECKOUT MODAL ===== -->
+  <div id="checkoutModal" class="modal-overlay">
+    <div class="modal-box checkout-box">
+      <button class="modal-close" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
+      <h2 class="modal-title">Secure Checkout</h2>
+      <div id="checkoutContent">
+        <form id="checkoutForm" class="checkout-form" novalidate>
+          <div class="form-section">
+            <h4>Shipping Information</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" id="firstName" placeholder="John" required />
+                <span class="error-msg" id="errFirstName"></span>
+              </div>
+              <div class="form-group">
+                <label>Last Name *</label>
+                <input type="text" id="lastName" placeholder="Doe" required />
+                <span class="error-msg" id="errLastName"></span>
+              </div>
+              <div class="form-group full">
+                <label>Email Address *</label>
+                <input type="email" id="email" placeholder="john@example.com" required />
+                <span class="error-msg" id="errEmail"></span>
+              </div>
+              <div class="form-group full">
+                <label>Street Address *</label>
+                <input type="text" id="address" placeholder="123 Main Street" required />
+                <span class="error-msg" id="errAddress"></span>
+              </div>
+              <div class="form-group">
+                <label>City *</label>
+                <input type="text" id="city" placeholder="Nairobi" required />
+                <span class="error-msg" id="errCity"></span>
+              </div>
+              <div class="form-group">
+                <label>ZIP / Postal Code *</label>
+                <input type="text" id="zip" placeholder="00100" required />
+              </div>
+              <div class="form-group full">
+                <label>Phone Number *</label>
+                <input type="tel" id="phone" placeholder="+254 700 000000" required />
+                <span class="error-msg" id="errPhone"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-section">
+            <h4>Payment Details</h4>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>Card Number *</label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required />
+                <span class="error-msg" id="errCard"></span>
+              </div>
+              <div class="form-group">
+                <label>Expiry Date *</label>
+                <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required />
+              </div>
+              <div class="form-group">
+                <label>CVV *</label>
+                <input type="text" id="cvv" placeholder="123" maxlength="3" required />
+              </div>
+            </div>
+          </div>
+          <div class="order-summary-mini">
+            <h4>Order Summary</h4>
+            <div id="checkoutSummary"></div>
+            <div class="checkout-total">
+              <strong>Total: <span id="checkoutTotal">$0.00</span></strong>
+            </div>
+          </div>
+          <button type="submit" class="btn-gold btn-full">Place Order <i class="fas fa-lock"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ORDER SUCCESS MODAL ===== -->
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-box success-box">
+      <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+      <h2>Order Placed! 🎉</h2>
+      <p>Thank you for shopping with <strong>Treasure Kelvins</strong>. Your order is confirmed and will be shipped soon.</p>
+      <p class="order-id">Order #TK-<span id="orderId"></span></p>
+      <button class="btn-gold" onclick="closeSuccess()">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- ===== PRODUCT DETAIL MODAL ===== -->
+  <div id="productModal" class="modal-overlay">
+    <div class="modal-box product-modal-box">
+      <button class="modal-close" onclick="closeProductModal()"><i class="fas fa-times"></i></button>
+      <div id="productModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header id="mainHeader" class="header">
+    <div class="header-top">
+      <span><i class="fas fa-shipping-fast"></i> Free Shipping on orders over $50</span>
+      <span><i class="fas fa-headset"></i> 24/7 Support</span>
+      <span><i class="fas fa-shield-alt"></i> Secure Payments</span>
+    </div>
+    <nav class="navbar">
+      <div class="nav-logo" onclick="showSection('home')">
+        <div class="logo-emblem">TK</div>
+        <div class="logo-text">
+          <span class="logo-main">Treasure Kelvins</span>
+          <span class="logo-sub">Discover Hidden Treasures</span>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search treasures…" oninput="handleSearch()" />
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+
+      <!-- Nav Links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" onclick="showSection('home')" class="nav-link active">Home</a></li>
+        <li><a href="#" onclick="showSection('shop')" class="nav-link">Shop</a></li>
+        <li><a href="#" onclick="showSection('about')" class="nav-link">About</a></li>
+        <li><a href="#" onclick="showSection('contact')" class="nav-link">Contact</a></li>
+      </ul>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <button class="icon-btn" onclick="openCart()" title="Cart">
+          <i class="fas fa-shopping-bag"></i>
+          <span id="navCartCount" class="cart-dot">0</span>
+        </button>
+        <button class="icon-btn" title="Wishlist"><i class="fas fa-heart"></i></button>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT WRAPPER ===== -->
+  <main id="mainContent">
+
+    <!-- ============================================================ -->
+    <!-- HOME SECTION -->
+    <!-- ============================================================ -->
+    <section id="homeSection" class="section active">
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+          <p class="hero-eyebrow"><span class="eyebrow-dot"></span> New Arrivals 2025</p>
+          <h1 class="hero-title">
+            Discover <em>Hidden</em><br/>Treasures at<br/>
+            <span class="gold-text">Unbeatable Prices</span>
+          </h1>
+          <p class="hero-subtitle">Curated premium products from around the world, delivered straight to your door.</p>
+          <div class="hero-cta">
+            <button class="btn-gold btn-lg" onclick="showSection('shop')">Shop Now <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-ghost btn-lg" onclick="scrollToSection('categories')">Browse Categories</button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><strong>10K+</strong><span>Happy Customers</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat"><strong>500+</strong><span>Products</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat"><strong>4.9★</strong><span>Rating</span></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card hero-card-main">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop" alt="Premium Watch" loading="lazy"/>
+            <div class="hero-card-tag">Best Seller</div>
+          </div>
+          <div class="hero-card hero-card-sm hero-card-top">
+            <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=200&h=200&fit=crop" alt="Beauty" loading="lazy"/>
+          </div>
+          <div class="hero-card hero-card-sm hero-card-bot">
+            <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=200&h=200&fit=crop" alt="Shoes" loading="lazy"/>
+          </div>
+          <div class="floating-badge badge-1"><i class="fas fa-star"></i> 4.9 Rating</div>
+          <div class="floating-badge badge-2"><i class="fas fa-truck"></i> Free Ship</div>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div id="categories" class="section-block">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-label">Browse By</p>
+            <h2 class="section-title">Shop Categories</h2>
+          </div>
+          <div class="categories-grid">
+            <div class="cat-card" onclick="filterByCategory('electronics')">
+              <div class="cat-icon"><i class="fas fa-microchip"></i></div>
+              <div class="cat-img-wrap">
+                <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=300&h=200&fit=crop" alt="Electronics" loading="lazy"/>
+              </div>
+              <h3>Electronics</h3>
+              <span>120+ Items</span>
+            </div>
+            <div class="cat-card" onclick="filterByCategory('fashion')">
+              <div class="cat-icon"><i class="fas fa-tshirt"></i></div>
+              <div class="cat-img-wrap">
+                <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=300&h=200&fit=crop" alt="Fashion" loading="lazy"/>
+              </div>
+              <h3>Fashion</h3>
+              <span>200+ Items</span>
+            </div>
+            <div class="cat-card" onclick="filterByCategory('home')">
+              <div class="cat-icon"><i class="fas fa-home"></i></div>
+              <div class="cat-img-wrap">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=200&fit=crop" alt="Home" loading="lazy"/>
+              </div>
+              <h3>Home & Living</h3>
+              <span>85+ Items</span>
+            </div>
+            <div class="cat-card" onclick="filterByCategory('beauty')">
+              <div class="cat-icon"><i class="fas fa-spa"></i></div>
+              <div class="cat-img-wrap">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=200&fit=crop" alt="Beauty" loading="lazy"/>
+              </div>
+              <h3>Beauty</h3>
+              <span>95+ Items</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Products Carousel -->
+      <div class="section-block dark-bg">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-label">Hand-Picked</p>
+            <h2 class="section-title">Featured Products</h2>
+            <button class="btn-outline-sm" onclick="showSection('shop')">View All</button>
+          </div>
+          <div class="carousel-wrapper">
+            <button class="carousel-btn prev-btn" onclick="slideCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
+            <div class="carousel-track-wrapper">
+              <div class="carousel-track" id="featuredCarousel"></div>
+            </div>
+            <button class="carousel-btn next-btn" onclick="slideCarousel(1)"><i class="fas fa-chevron-right"></i></button>
+          </div>
+          <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+      </div>
+
+      <!-- Best Deals / Trending -->
+      <div class="section-block">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-label">🔥 Hot Right Now</p>
+            <h2 class="section-title">Trending Deals</h2>
+          </div>
+          <div class="deals-grid" id="trendingGrid"></div>
+        </div>
+      </div>
+
+      <!-- Why Choose Us -->
+      <div class="section-block dark-bg">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Why Treasure Kelvins?</h2>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
+              <h3>Express Delivery</h3>
+              <p>Lightning-fast shipping to your doorstep in 3–7 business days.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+              <h3>Buyer Protection</h3>
+              <p>100% money-back guarantee. Shop with total confidence.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon"><i class="fas fa-gem"></i></div>
+              <h3>Premium Quality</h3>
+              <p>Every product is vetted for quality before it reaches you.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon"><i class="fas fa-headset"></i></div>
+              <h3>24/7 Support</h3>
+              <p>Our team is always ready to help you, day or night.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials -->
+      <div class="section-block">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-label">What Customers Say</p>
+            <h2 class="section-title">Reviews</h2>
+          </div>
+          <div class="testimonials-grid">
+            <div class="testimonial-card">
+              <div class="stars">★★★★★</div>
+              <p>"Absolutely love this store! The quality of products far exceeded my expectations. Will definitely be back."</p>
+              <div class="reviewer"><img src="https://i.pravatar.cc/50?img=1" alt="Reviewer"/><span>Sarah M.</span></div>
+            </div>
+            <div class="testimonial-card featured-review">
+              <div class="stars">★★★★★</div>
+              <p>"Treasure Kelvins is my go-to shop now. Amazing deals, super fast shipping, and top-notch customer service!"</p>
+              <div class="reviewer"><img src="https://i.pravatar.cc/50?img=8" alt="Reviewer"/><span>James O.</span></div>
+            </div>
+            <div class="testimonial-card">
+              <div class="stars">★★★★★</div>
+              <p>"The gold watch I ordered arrived perfectly packaged. Looks even better in person. 10/10 experience!"</p>
+              <div class="reviewer"><img src="https://i.pravatar.cc/50?img=5" alt="Reviewer"/><span>Amina K.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="newsletter-section">
+        <div class="container">
+          <div class="newsletter-inner">
+            <div class="newsletter-text">
+              <h2>Get Exclusive Deals First</h2>
+              <p>Join 10,000+ treasure hunters. Get weekly deals, new arrivals, and insider discounts.</p>
+            </div>
+            <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+              <input type="email" id="newsletterEmail" placeholder="Enter your email address" required />
+              <button type="submit" class="btn-gold">Subscribe <i class="fas fa-paper-plane"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SHOP SECTION -->
+    <!-- ============================================================ -->
+    <section id="shopSection" class="section">
+      <div class="page-hero shop-hero">
+        <h1>Our <span class="gold-text">Shop</span></h1>
+        <p>Explore our curated collection of premium products</p>
+      </div>
+      <div class="container">
+        <div class="shop-toolbar">
+          <div class="shop-filters">
+            <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+            <button class="filter-btn" onclick="filterProducts('electronics', this)">Electronics</button>
+            <button class="filter-btn" onclick="filterProducts('fashion', this)">Fashion</button>
+            <button class="filter-btn" onclick="filterProducts('home', this)">Home & Living</button>
+            <button class="filter-btn" onclick="filterProducts('beauty', this)">Beauty</button>
+          </div>
+          <div class="shop-sort">
+            <select id="sortSelect" onchange="sortProducts()">
+              <option value="default">Sort By: Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+            </select>
+          </div>
+        </div>
+        <p class="results-count" id="resultsCount"></p>
+        <div class="products-grid" id="shopGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- ABOUT SECTION -->
+    <!-- ============================================================ -->
+    <section id="aboutSection" class="section">
+      <div class="page-hero about-hero">
+        <h1>About <span class="gold-text">Us</span></h1>
+        <p>The story behind Treasure Kelvins</p>
+      </div>
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-text">
+            <p class="section-label">Our Story</p>
+            <h2 class="section-title">Bringing Hidden Treasures to You</h2>
+            <p>Treasure Kelvins was born from a simple belief: <em>everyone deserves access to premium products without paying premium prices.</em> We scour the globe to find the finest goods — from cutting-edge electronics to timeless fashion — and bring them directly to your door.</p>
+            <p>Founded in 2023, we've grown from a small passion project into a thriving marketplace trusted by thousands of customers across the world. Our commitment has always been the same: <strong>quality, value, and exceptional service.</strong></p>
+            <div class="about-stats">
+              <div class="ab-stat"><h3>10K+</h3><p>Happy Customers</p></div>
+              <div class="ab-stat"><h3>500+</h3><p>Curated Products</p></div>
+              <div class="ab-stat"><h3>50+</h3><p>Countries Served</p></div>
+            </div>
+          </div>
+          <div class="about-visual">
+            <div class="about-img-stack">
+              <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=400&fit=crop" alt="Our Store" loading="lazy" class="ab-img-main"/>
+              <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=250&h=200&fit=crop" alt="Team" loading="lazy" class="ab-img-sm"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="mission-section">
+          <div class="mission-card">
+            <i class="fas fa-bullseye"></i>
+            <h3>Our Mission</h3>
+            <p>To democratize access to premium global products through fair pricing, transparency, and a seamless shopping experience.</p>
+          </div>
+          <div class="mission-card">
+            <i class="fas fa-eye"></i>
+            <h3>Our Vision</h3>
+            <p>To become the most trusted dropshipping destination in East Africa and beyond by 2026.</p>
+          </div>
+          <div class="mission-card">
+            <i class="fas fa-heart"></i>
+            <h3>Our Values</h3>
+            <p>Integrity. Quality. Customer-first. We stand behind every product we sell, no exceptions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CONTACT SECTION -->
+    <!-- ============================================================ -->
+    <section id="contactSection" class="section">
+      <div class="page-hero contact-hero">
+        <h1>Contact <span class="gold-text">Us</span></h1>
+        <p>We'd love to hear from you</p>
+      </div>
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <p>Have questions about your order or our products? Our team is here to help you 24/7.</p>
+            <div class="contact-details">
+              <div class="contact-item">
+                <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div><strong>Address</strong><br/>Nairobi, Kenya</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                <div><strong>Phone</strong><br/>+254 700 000 000</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                <div><strong>Email</strong><br/>support@treasurekelvins.com</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                <div><strong>Hours</strong><br/>Mon–Sun: 24/7 Online</div>
+              </div>
+            </div>
+            <div class="social-links">
+              <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="contact-form-wrap">
+            <form id="contactForm" class="contact-form" onsubmit="submitContact(event)">
+              <h3>Send a Message</h3>
+              <div class="form-group">
+                <label>Your Name *</label>
+                <input type="text" id="contactName" placeholder="John Doe" required />
+              </div>
+              <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="contactEmail" placeholder="john@example.com" required />
+              </div>
+              <div class="form-group">
+                <label>Subject *</label>
+                <select id="contactSubject" required>
+                  <option value="">Select a topic…</option>
+                  <option>Order Inquiry</option>
+                  <option>Product Question</option>
+                  <option>Returns & Refunds</option>
+                  <option>Partnership</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Message *</label>
+                <textarea id="contactMessage" rows="5" placeholder="Tell us how we can help…" required></textarea>
+              </div>
+              <button type="submit" class="btn-gold btn-full">Send Message <i class="fas fa-paper-plane"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo" onclick="showSection('home')">
+            <span class="logo-emblem">TK</span>
+            <span class="logo-main">Treasure Kelvins</span>
+          </div>
+          <p>Discover hidden treasures at unbeatable prices. Your premium dropshipping destination.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#" onclick="filterProducts('electronics',null);showSection('shop')">Electronics</a></li>
+            <li><a href="#" onclick="filterProducts('fashion',null);showSection('shop')">Fashion</a></li>
+            <li><a href="#" onclick="filterProducts('home',null);showSection('shop')">Home & Living</a></li>
+            <li><a href="#" onclick="filterProducts('beauty',null);showSection('shop')">Beauty</a></li>
+            <li><a href="#" onclick="showSection('shop')">New Arrivals</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#" onclick="showSection('about')">About Us</a></li>
+            <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping Policy</a></li>
+            <li><a href="#">Returns & Refunds</a></li>
+            <li><a href="#">Track Your Order</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Payments Accepted</h4>
+          <div class="payment-icons">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-paypal"></i>
+            <i class="fab fa-cc-apple-pay"></i>
+            <i class="fab fa-google-pay"></i>
+          </div>
+          <h4 style="margin-top:1.5rem">Newsletter</h4>
+          <form class="footer-newsletter" onsubmit="subscribeNewsletter(event)">
+            <input type="email" placeholder="Your email" required />
+            <button type="submit"><i class="fas fa-arrow-right"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Treasure Kelvins. All rights reserved. Made with <i class="fas fa-heart" style="color:#d4af37"></i> in Kenya.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ===== Main Script ===== -->
+  <script src="script.js"></script>
+</body>
+</html>
